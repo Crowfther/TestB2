@@ -11,11 +11,13 @@ public class ScrPlayer : MonoBehaviour
     float x, y; //Para leer el gamepad.
     
     Rigidbody2D rb; // Para acceder al componente RigidBody
+    ScrPickup scrP;
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>(); // rb apunta al componente Rigidbody2D del jugador.
+        print("En esta escena hay: " + ScrControlGame.pickups);
     }
 
     // Update is called once per frame
@@ -35,9 +37,10 @@ public class ScrPlayer : MonoBehaviour
         // if (collision.tag == "Pickup") Destroy(collision.gameObject);
         if (collision.CompareTag("Pickup"))
         {
+            scrP = collision.GetComponent<ScrPickup>(); // Línea para acceder al script de cada Pickup con el que colisiones.
+            ScrControlGame.puntos += scrP.valor; // Aumentar los puntos siguiendo el valor del Pickup en cuestion.
             Destroy(collision.gameObject); // Optimización de la orden anterior.
-            ScrControlGame.puntos += 5;
-            print ("Puntuación: " + ScrControlGame.puntos);
+            ScrControlGame.pickups--;
         }
     }
 }
